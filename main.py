@@ -2,6 +2,8 @@ from fastapi import FastAPI, Body
 from api.test_process_api.process_api import test_process_router
 from api.user_api.api_user import user_router
 
+from database import Base, engine
+Base.metadata.create_all(bind=engine)
 
 # Объект приложения
 app = FastAPI(docs_url='/')

@@ -18,7 +18,7 @@ class Question(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     q_text = Column(String, nullable=False)
-    answer = Column(String, nullable=False)
+    answer = Column(Integer, nullable=False)
 
     v1 = Column(String, nullable=False)
     v2 = Column(String, nullable=False)
@@ -34,13 +34,14 @@ class UserAnswer(Base):
 
     user_id = Column(Integer, ForeignKey('users.id'))
     question_id = Column(Integer, ForeignKey('questions.id'))
-    user_answer = Column(Integer)
 
+    user_answer = Column(Integer)
     correctness = Column(Boolean)
 
     answer_date = Column(DateTime)
 
     user_fk = relationship(User)
+    question_fk = relationship(Question)
 
 
 class Rating(Base):

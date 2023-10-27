@@ -37,6 +37,7 @@ def get_user_score_db(user_id: int) -> int:
     return 0
 
 
+# Показывает 5 людей с лучшим счетом
 def show_leaders_db() -> list:
     db = next(get_db())
 
@@ -45,7 +46,8 @@ def show_leaders_db() -> list:
     return rating[:5]
 
 
-def add_user_answer(user_id: int, question_id: int, user_answer: int, correctness: bool) -> bool:
+# Запись результатов пользователя
+def add_user_answer_db(user_id, question_id, user_answer, correctness) -> bool:
     db = next(get_db())
 
     new_answers = UserAnswer(user_id=user_id, user_answer=user_answer, question_id=question_id,
@@ -55,8 +57,12 @@ def add_user_answer(user_id: int, question_id: int, user_answer: int, correctnes
     exact_user_score = db.query(Rating).filter_by(user_id=user_id).first()
 
     if correctness:
+        exact_user_score.user_score += 1
 
-        db.add(new_answers)
-        db.commit()
+    else:
+        exact_user_score.user_score -= 1
 
-    return True
+    db.add(new_answers)
+    db.commit()
+
+    return True if correctness else False
